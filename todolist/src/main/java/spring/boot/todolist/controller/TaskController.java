@@ -1,11 +1,10 @@
 package spring.boot.todolist.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.boot.todolist.model.Task;
 import spring.boot.todolist.repository.TaskRepository;
 
@@ -29,6 +28,28 @@ public class TaskController {
 
         Optional<Task> task = taskRepository.findById(id);
         return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+    @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        Task savedTask = taskRepository.save(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetail) {
+        Optional<Task> task = taskRepository.findById(id);
+        if (task.isPresent()) {
+            Task existingTask = task.get();
+            existingTask.setTitle(taskDetail.getTitle());
+            existingTask.setTitle(taskDetail.getDescription());
+            existingTask.setCompleted(taskDetail.isCompleted());
+
+            Task updatedTask = taskRepository.save(existingTask);
+            return ResponseEntity.ok(updatedTask);
+        } else {
+
+            return ResponseEntity.notFound().build();
+        }
     }
 }
