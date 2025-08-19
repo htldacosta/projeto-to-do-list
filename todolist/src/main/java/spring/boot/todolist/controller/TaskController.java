@@ -1,5 +1,6 @@
 package spring.boot.todolist.controller;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -51,5 +52,16 @@ public class TaskController {
 
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/id")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+       Optional<Task> task = taskRepository.findById(id);
+       if (task.isPresent()) {
+           taskRepository.delete(task.get());
+           return ResponseEntity.noContent().build();
+       } else {
+           return ResponseEntity.notFound().build();
+       }
     }
 }
