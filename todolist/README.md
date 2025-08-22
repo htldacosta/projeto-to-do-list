@@ -55,10 +55,19 @@ Se você quiser visualizar o banco de dados em memória, acesse o console do H2 
 [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 
 Use as seguintes credenciais:
-* **Driver Class:** `org.h2.Driver`
-* **JDBC URL:** `jdbc:h2:mem:todolistdb`
-* **User Name:** `sa`
-* **Password:** `123`
+
+* **Configuração do banco de dados H2
+* **spring.h2.console.enabled=true
+* **spring.h2.console.path=/h2-console
+* **spring.datasource.url=jdbc:h2:mem:todolistdb
+* **spring.datasource.driverClassName=org.h2.Driver
+* **spring.datasource.username=sa
+* **spring.datasource.password=123
+
+* **Configurações do JPA e Hibernate
+* **spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+* **spring.jpa.show-sql=true
+* **spring.jpa.hibernate.ddl-auto=update
 
 ## 🤝 Contribuições
 O propósito do projeto foi apenas de estudo. Não são necessárias melhorias ou qualquer tipo de mudança no curto e médio prazo.
